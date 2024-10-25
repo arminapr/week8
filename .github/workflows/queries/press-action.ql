@@ -6,10 +6,13 @@
  */
 import javascript
 
-predicate callsPressActionKey(CallExpression call) {
-    call.getTarget().getName() = "pressActionKey"
+predicate callsPressActionKey(Expr call) {
+    exists(CallExpression callExpr |
+        callExpr = call and
+        callExpr.getTarget().getName() = "pressActionKey"
+    )
 }
 
-from Function test, CallExpression call
+from Function test, Expr call
 where test.getName().regexpMatch("test.*") and callsPressActionKey(call) and call.getEnclosingFunction() = test
 select test, "Found test calling 'pressActionKey': " + test.getName()
